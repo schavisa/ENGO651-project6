@@ -38,11 +38,11 @@ function remove() {
     }
 }
 
-function draw(latlngs){
+function draw(latlngs, colour='red'){
     if (polyline) {
         polyline.remove(map); // Remove the old polyline
     }
-    polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);  // Add the new one
+    polyline = L.polyline(latlngs, {color: colour}).addTo(map);  // Add the new one
 
     // Zoom the map to the polyline
     map.fitBounds(polyline.getBounds());
@@ -51,10 +51,10 @@ function draw(latlngs){
 function simplify() {
     console.log("simplifying lines");
     var geojson = turf.lineString(latlngs);
-    var options = {tolerance: 1, highQuality: false};
+    var options = {tolerance: 0.004, highQuality: false};
     var simplified = turf.simplify(geojson, options);
     latlngs = simplified.geometry.coordinates;
     if (latlngs.length > 1) {
-        draw(latlngs);
+        draw(latlngs, colour='green');
     }
 }
