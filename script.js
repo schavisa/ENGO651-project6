@@ -4,6 +4,8 @@ var polyline;
 
 // Define the map centered on Calgary
 var map = L.map('map').setView([51.039439, -114.054339], 11);
+
+var pointsLayer = L.layerGroup();
 map.addLayer(pointsLayer);
 
 // Add the basemap
