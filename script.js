@@ -1,6 +1,14 @@
 // Set-up
 var latlngs = [];
 var polyline;
+var circleOptions = {
+    color: 'red',
+    fillColor: '#f03',
+    fillOpacity: 1
+ }
+
+ var pointsLayer = L.layerGroup();
+
 
 // Define the map centered on Calgary
 var map = L.map('map').setView([51.039439, -114.054339], 11);
@@ -20,9 +28,10 @@ function startdrawing() {
         
         latlngs = latlngs.concat([[lat, lng]]);
         
-        if (latlngs.length > 1){
-            draw(latlngs);
-        }
+        L.circleMarker([lat, lng], {radius: 2}).addTo(map);
+
+        draw(latlngs);
+
         });
 }
 
@@ -36,9 +45,15 @@ function remove() {
     if (polyline) {
         polyline.remove(map);
     }
+
+    map.removeLayer(pointsLayer);
+    pointsLayer = L.layerGroup;
 }
 
-function draw(latlngs, colour='red'){
+function draw(latlngs, colour='red') {
+
+    if (latlngs.length <= 1) return;
+
     if (polyline) {
         polyline.remove(map); // Remove the old polyline
     }
@@ -49,12 +64,12 @@ function draw(latlngs, colour='red'){
 }
 
 function simplify() {
+    if (latlngs.length < 2) return;
+
     console.log("simplifying lines");
     var geojson = turf.lineString(latlngs);
     var options = {tolerance: 0.004, highQuality: false};
     var simplified = turf.simplify(geojson, options);
     latlngs = simplified.geometry.coordinates;
-    if (latlngs.length > 1) {
-        draw(latlngs, colour='green');
-    }
+    draw(latlngs, colour='green');
 }
