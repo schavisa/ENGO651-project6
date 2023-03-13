@@ -2,9 +2,6 @@
 var latlngs = [];
 var polyline;
 
-var pointsLayer = L.layerGroup();
-
-
 // Define the map centered on Calgary
 var map = L.map('map').setView([51.039439, -114.054339], 11);
 
@@ -14,6 +11,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
+
 function startdrawing() {
     console.log("start drawing");
     map.on('click', e => {
@@ -22,28 +20,25 @@ function startdrawing() {
         var lng = coord.lng;
         
         latlngs = latlngs.concat([[lat, lng]]);
-        
-        L.circleMarker([lat, lng], {radius: 2}).addTo(map);
-
+    
         draw(latlngs);
-
-        });
+    });
 }
+
 
 function stopdrawing() {
     console.log('stop drawing');
     map.off('click');
 }
 
+
 function remove() {
     latlngs = [];
     if (polyline) {
         polyline.remove(map);
     }
-
-    map.removeLayer(pointsLayer);
-    pointsLayer = L.layerGroup();
 }
+
 
 function draw(latlngs, colour='red') {
 
@@ -57,6 +52,7 @@ function draw(latlngs, colour='red') {
     // Zoom the map to the polyline
     map.fitBounds(polyline.getBounds());
 }
+
 
 function simplify() {
     var tol = document.getElementById('tol').value;
