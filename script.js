@@ -2,7 +2,7 @@
 var latlngs = [];
 var polyline;
 
- var pointsLayer = L.layerGroup();
+var pointsLayer = L.layerGroup();
 
 
 // Define the map centered on Calgary
@@ -42,7 +42,7 @@ function remove() {
     }
 
     map.removeLayer(pointsLayer);
-    pointsLayer = L.layerGroup;
+    pointsLayer = L.layerGroup();
 }
 
 function draw(latlngs, colour='red') {
@@ -59,11 +59,16 @@ function draw(latlngs, colour='red') {
 }
 
 function simplify() {
+    var tol = document.getElementById('tol').value;
+    if (tol == "" || isNaN(tol)) {
+        tol = 0.004;
+    }
+
     if (latlngs.length < 2) return;
 
     console.log("simplifying lines");
     var geojson = turf.lineString(latlngs);
-    var options = {tolerance: 0.004, highQuality: false};
+    var options = {tolerance: tol, highQuality: false};
     var simplified = turf.simplify(geojson, options);
     latlngs = simplified.geometry.coordinates;
     draw(latlngs, colour='green');
