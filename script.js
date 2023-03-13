@@ -1,11 +1,6 @@
 // Set-up
 var latlngs = [];
 var polyline;
-var circleOptions = {
-    color: 'red',
-    fillColor: '#f03',
-    fillOpacity: 1
- }
 
  var pointsLayer = L.layerGroup();
 
@@ -55,7 +50,7 @@ function draw(latlngs, colour='red') {
     if (latlngs.length <= 1) return;
 
     if (polyline) {
-        polyline.remove(map); // Remove the old polyline
+        polyline.remove(map);  // Remove the old polyline
     }
     polyline = L.polyline(latlngs, {color: colour}).addTo(map);  // Add the new one
 
