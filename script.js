@@ -12,6 +12,7 @@ var circleOptions = {
 
 // Define the map centered on Calgary
 var map = L.map('map').setView([51.039439, -114.054339], 11);
+map.addLayer(pointsLayer);
 
 // Add the basemap
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -28,7 +29,8 @@ function startdrawing() {
         
         latlngs = latlngs.concat([[lat, lng]]);
         
-        L.circleMarker([lat, lng], {radius: 2}).addTo(map);
+        //L.circleMarker([lat, lng], {radius: 2}).addTo(map);
+        pointsLayer.addLayer(L.circleMarker([lat, lng], {radius: 2}));
 
         draw(latlngs);
 
@@ -44,10 +46,11 @@ function remove() {
     latlngs = [];
     if (polyline) {
         polyline.remove(map);
+        //pointsLayer.clearLayers();
+        
     }
-
-    map.removeLayer(pointsLayer);
-    pointsLayer = L.layerGroup;
+    pointsLayer.clearLayers();
+    //pointsLayer = L.layerGroup;
 }
 
 function draw(latlngs, colour='red') {
@@ -72,4 +75,5 @@ function simplify() {
     var simplified = turf.simplify(geojson, options);
     latlngs = simplified.geometry.coordinates;
     draw(latlngs, colour='green');
+    pointsLayer.clearLayers();
 }
