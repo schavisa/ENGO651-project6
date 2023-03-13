@@ -19,13 +19,10 @@ function startdrawing() {
         var lng = coord.lng;
         
         latlngs = latlngs.concat([[lat, lng]]);
-        console.log(latlngs);
         
         if (latlngs.length > 1){
             draw(latlngs);
         }
-        
-        //draw(latlngs);
         });
 }
 
@@ -39,8 +36,6 @@ function remove() {
     if (polyline) {
         polyline.remove(map);
     }
-    
-    // draw(latlngs);
 }
 
 function draw(latlngs){
@@ -49,13 +44,17 @@ function draw(latlngs){
     }
     polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);  // Add the new one
 
-    // zoom the map to the polyline
+    // Zoom the map to the polyline
     map.fitBounds(polyline.getBounds());
 }
 
-function simplify(latlngs){
+function simplify() {
     console.log("simplifying lines");
-    var geojson = turf.polygon([latlngs]);
-    var options = {tolerance: 0.01, highQuality: false};
+    var geojson = turf.lineString(latlngs);
+    var options = {tolerance: 1, highQuality: false};
     var simplified = turf.simplify(geojson, options);
+    latlngs = simplified.geometry.coordinates;
+    if (latlngs.length > 1) {
+        draw(latlngs);
+    }
 }
