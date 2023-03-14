@@ -1,6 +1,6 @@
 # Simplification Drawing
 
-ENGO 651 - Adv. Topics on Geospatial Technologies - Projects 6
+ENGO 651 - Adv. Topics on Geospatial Technologies - Project 6
 
 By Adam and Chavisa
 
